@@ -1,8 +1,7 @@
 # Ames Housing Price Prediction: An Architectural Comparison Study
 
-This repository evaluates the efficacy of divergent machine learning paradigms—specifically parametric linear models, gradient-boosted tree ensembles, and deep neural networks—when applied to high-cardinality, small-sample tabular regression tasks. 
-
-The primary scope of the study focuses on feature engineering pipelines, optimization stability under regularization constraints, and empirical limits of structural complexity given small sample sizes.
+This repository compares three machine learning approaches—regularized linear models, gradient-boosted tree ensembles, and deep neural networks—on the Ames Housing Price Prediction dataset. The study focuses on how different model architectures perform on small tabular datasets with mixed numerical and categorical features.
+In addition to comparing predictive performance, the project investigates preprocessing strategies, regularization techniques, and the effect of model complexity on generalization.
 
 ## Performance Evaluation
 
@@ -18,17 +17,17 @@ The primary scope of the study focuses on feature engineering pipelines, optimiz
 
 ### 1. Ridge Regression Baseline
 * **Methodology:** Categorical features were processed via One-Hot Encoding (OHE). A log transformation log(1+x) was applied to the target variable (`SalePrice`) to normalize right-skewness.
-* **Analysis:** While computationally efficient, the parametric assumptions of linear regression failed to capture non-linear feature interactions, such as variations in depreciation across disparate neighborhoods.
+* **Analysis:** Ridge Regression provided a strong baseline but was limited in modeling complex nonlinear relationships between housing features and sale price, resulting in lower predictive performance than tree-based models.
 
 ### 2. Gradient-Boosted Decision Trees (XGBoost)
 * **Methodology:** Hyperparameter optimization was conducted on a gradient-boosted tree framework. Minimal geometric scaling was required due to tree-based invariance to feature distributions.
-* **Analysis:** As the top-performing independent model (0.12966 RMSE), XGBoost demonstrated the structural superiority of decision trees on tabular data. The model natively maps the discrete, jagged decision boundaries common to spreadsheet features, yielding high sample efficiency.
+* **Analysis:** As the top-performing independent model (0.12966 RMSE), XGBoost achieved the lowest RMSE among the evaluated models. Its ability to model nonlinear feature interactions while handling heterogeneous tabular data made it particularly effective for this dataset. The model natively maps the discrete, jagged decision boundaries common to spreadsheet features, yielding high sample efficiency.
 
 ### 3. Deep Learning Challenge: Multi-Layer Perceptron (MLP)
 * **Methodology:** A dense, feed-forward neural network was constructed using TensorFlow/Keras, utilizing an initial `StandardScaler` pipeline to stabilize gradient descent.
-* **Optimization Diagnostics:** Initial iterations exhibited optimization stagnation, plateauing at 0.5052 validation RMSE. Diagnostic analysis revealed a parameter conflict: an aggressive $L_2$ regularization penalty ($\lambda = 0.01$) effectively neutralized a conservative learning rate ($\eta = 0.001$). This backpropagation friction collapsed the hidden layer weights toward zero, forcing the network to predict the global sample mean.
+* **Optimization Diagnostics:** Initial iterations exhibited optimization stagnation, plateauing at 0.5052 validation RMSE. Diagnostic analysis revealed a parameter conflict: an aggressive $L_2$ regularization penalty ($\lambda = 0.01$) effectively neutralized a conservative learning rate ($\eta = 0.001$). The combination of a conservative learning rate and strong L2 regularization prevented effective weight updates, leading to underfitting during early training.
 * **Resolution:** Adjusting the learning rate to 0.015 and implementing a 0.3 Dropout rate allowed the optimizer to overcome the regularizer's weight-decay threshold. This settled at a local validation RMSE of 0.1386 and generalized to 0.17245 on the unseen test set.
-* **Conclusion:** The MLP proved highly susceptible to overfitting due to severe data scarcity (1,168 training observations), confirming that tree ensembles remain the mathematically optimal choice for sparse tabular structures.
+* **Conclusion:** These experiments highlight the practical challenges of applying neural networks to relatively small tabular datasets.
 
 ---
 
@@ -36,5 +35,8 @@ The primary scope of the study focuses on feature engineering pipelines, optimiz
 
 * `/notebooks/housing-prices-regularised-linear-regression.ipynb` — Log transforms, parametric modeling, and baseline execution.
 * `/notebooks/housing-price-predictor-decision-trees.ipynb` — Hyperparameter tuning and feature importance analysis.
-* `/notebooks/neural-network-mlp.ipynb` — Keras MLP architecture, learning curve diagnostics, and regularization tuning.
+* `/notebooks/house-price-predictor-neural-network.ipynb` — Keras MLP architecture, learning curve diagnostics, and regularization tuning.
 * `/data/` — Local dataset references and validation splits.
+* 
+## Future Scope: Model Blending
+The next evolution of this project involves developing a weighted ensemble blend (e.g., 70% XGBoost + 30% Neural Network). Since both models approach spatial boundaries entirely differently, ensembling their predictions will smooth individual model variance and increase accuracy to a level greater than either model
