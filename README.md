@@ -5,10 +5,10 @@ An end-to-end machine learning study evaluating and comparing different algorith
 ##  Project Architecture & Model Leaderboard
 Rather than relying on a single algorithm, this repository serves as a comparative benchmark to analyze how different model architectures handle non-linear relationships, multi-collinearity, and the bias-variance tradeoff.
 
-| Model Architecture | Preprocessing Pipeline | Validation RMSE | Kaggle Rank |
-| :--- | :--- | :--- | :--- | :--- |
+| Model Architecture | Preprocessing Pipeline | Kaggle Test RMSE | Kaggle Rank |
+| :--- | :--- | :--- | :--- |
 | **Ridge Linear Regression ($L_2$)** | Median Imputation + Log Transform + Scaling + OHE | 0.14522 | 3,292 |
-| **Random Forest Regressor** | Minimal (No scaling or OHE tracking needed) | 0.12966 | 2135 |
+| **Tuned XGBoost / Random Forest** | Median Imputation + Log Transform + OHE | 0.12966 | 2,135 |
 | **Multi-Layer Perceptron (NN)** | Strict Scaling + Full Feature Encoding | *TBD* | *TBD* |
 
 ---
