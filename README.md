@@ -7,9 +7,9 @@ Rather than relying on a single algorithm, this repository serves as a comparati
 
 | Model Architecture | Preprocessing Pipeline | Validation RMSE | Kaggle Rank | Status |
 | :--- | :--- | :--- | :--- | :--- |
-| **Ridge Linear Regression ($L_2$)** | Median Imputation + Log Transform + Scaling + OHE | 0.1554 | 3,292 (top 8%) | Completed |
-| **Random Forest Regressor** | Minimal (No scaling or OHE tracking needed) | *TBD* | *TBD* | In Progress |
-| **Multi-Layer Perceptron (NN)** | Strict Scaling + Full Feature Encoding | *TBD* | *TBD* | Planned |
+| **Ridge Linear Regression ($L_2$)** | Median Imputation + Log Transform + Scaling + OHE | 0.1554 | 3,292 |
+| **Random Forest Regressor** | Minimal (No scaling or OHE tracking needed) | 0.1296 | 2135 |
+| **Multi-Layer Perceptron (NN)** | Strict Scaling + Full Feature Encoding | *TBD* | *TBD* |
 
 ---
 
